@@ -102,4 +102,4 @@ Abre un dialogo de confirmación, retorna true o false segun la opcion seleccion
 - Se debe validar que el usuario seleccione un banco y cuenta si la forma de pago lo requiere.
 - El saldo debe actualizarse correctamente tras cada operación.
 - Se debe manejar correctamente el caso en que el monto pagado supere el total.
-- Esta demo no 
+- No se usan servicios REST para esta demostracion, consume tus servicios correspondientes.
