@@ -124,6 +124,12 @@ export class PaymentComponent {
       return;
     }
 
+    //validar que mmonto sea positivo mayor a 0
+    if(monto <= 0 ){
+      this.openSnackbar("EL monto debe ser mayor a 0");
+      return;
+    }
+
     //si la forma de pago requiere autorizacion validar que se agregue
     if (this.pago!.autorizacion) {
       //Validar que se haya ingresado una autorizacion
