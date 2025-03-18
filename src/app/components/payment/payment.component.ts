@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BancoInterface } from 'src/app/interfaces/banco.interface';
 import { CuentaBancoInterface } from 'src/app/interfaces/cuenta-banco.interface';
@@ -7,6 +8,7 @@ import { MontoIntreface } from 'src/app/interfaces/monto.interface';
 import { bancos } from 'src/app/providers/bancos.provider';
 import { cuentas } from 'src/app/providers/cuenta.provider-';
 import { formas } from 'src/app/providers/formas-pago.provider';
+import { DialogActionsComponent } from '../dialog-actions/dialog-actions.component';
 
 @Component({
   selector: 'app-payment',
@@ -36,7 +38,10 @@ export class PaymentComponent {
   cambio: number = 0;
   pagado: number = 0;
 
-  constructor(private _snackBar: MatSnackBar) {
+  constructor(
+    private _snackBar: MatSnackBar,
+    private _dialog:MatDialog,
+  ) {
 
   }
 
@@ -261,7 +266,11 @@ export class PaymentComponent {
       return;
     }
 
-    //TODO:Dialogo de confirmacion
+    //Dialogo de confirmacion
+    let verificador = await this.openDialogActions();
+
+    if (!verificador) return;
+
 
     //si se confurma la eliminacion la lista de montos queda con los lementos que no estén seleccioandos 
     this.montos = this.montos.filter((monto) => !monto.checked);
@@ -304,4 +313,21 @@ export class PaymentComponent {
   
   }
 
+
+  
+
+    //Abrir dialogo de confirmacion, devuelve falso o verdadero dependiendo de la opcion seleccioanda
+    openDialogActions(): Promise<boolean> {
+      return new Promise((resolve, reject) => {
+          const dialogRef = this._dialog.open(DialogActionsComponent);
+
+          dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                  resolve(true);
+              } else {
+                  resolve(false);
+              }
+          });
+      });
+  }
 }
