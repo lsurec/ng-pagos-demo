@@ -33,7 +33,7 @@ export class PaymentComponent {
   isLoading: boolean = false;
 
   //Toales pago
-  total: number = 3145.89
+  total: number = 3145.89 //asignar total del documento (total a apagar)
   saldo: number = this.total;
   cambio: number = 0;
   pagado: number = 0;
