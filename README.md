@@ -103,3 +103,6 @@ Abre un dialogo de confirmación, retorna true o false segun la opcion seleccion
 - El saldo debe actualizarse correctamente tras cada operación.
 - Se debe manejar correctamente el caso en que el monto pagado supere el total.
 - No se usan servicios REST para esta demostracion, consume tus servicios correspondientes.
+
+#DEMO en vivo
+* [Puedes ver una demo en vivo aquí.](https://lsurec.github.io/ng-pagos-demo/)
