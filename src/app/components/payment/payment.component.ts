@@ -33,14 +33,14 @@ export class PaymentComponent {
   isLoading: boolean = false;
 
   //Toales pago
-  total: number = 5040
+  total: number = 3145.89
   saldo: number = this.total;
   cambio: number = 0;
   pagado: number = 0;
 
   constructor(
     private _snackBar: MatSnackBar,
-    private _dialog:MatDialog,
+    private _dialog: MatDialog,
   ) {
 
   }
@@ -130,7 +130,7 @@ export class PaymentComponent {
     }
 
     //validar que mmonto sea positivo mayor a 0
-    if(monto <= 0 ){
+    if (monto <= 0) {
       this.openSnackbar("EL monto debe ser mayor a 0");
       return;
     }
@@ -238,7 +238,7 @@ export class PaymentComponent {
 
   //Cambiar de banco
   async changeBanco() {
-    this.cuentas = []; 
+    this.cuentas = [];
     //simula caragr cuentas de banrural
     //TODO:Cargar cuentas bancarias
     if (this.banco!.banco == 4) {
@@ -308,26 +308,23 @@ export class PaymentComponent {
       this.saldo = this.total - this.pagado;
     }
 
-    //Agregar saldo pendiente a la variebale del input monto en pago
+    //Agregar saldo pendiente a la variebale del input monto enay pago
     this.monto = parseFloat(this.saldo.toFixed(2)).toString();
-  
+
   }
 
+  //Abrir dialogo de confirmacion, devuelve falso o verdadero dependiendo de la opcion seleccioanda
+  openDialogActions(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const dialogRef = this._dialog.open(DialogActionsComponent);
 
-  
-
-    //Abrir dialogo de confirmacion, devuelve falso o verdadero dependiendo de la opcion seleccioanda
-    openDialogActions(): Promise<boolean> {
-      return new Promise((resolve, reject) => {
-          const dialogRef = this._dialog.open(DialogActionsComponent);
-
-          dialogRef.afterClosed().subscribe(result => {
-              if (result) {
-                  resolve(true);
-              } else {
-                  resolve(false);
-              }
-          });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
       });
+    });
   }
 }

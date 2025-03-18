@@ -1,27 +1,100 @@
-# NgPagos
+# Proceso cargo abono 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.6.
+## 1. Descripción
+El componente `PaymentComponent` es responsable de gestionar el flujo de pagos en la aplicación. Permite seleccionar formas de pago, ingresar montos, validar datos y calcular totales.
 
-## Development server
+## 2. Dependencias
+Este componente depende de:
+- `Angular Material:`
+  - MatIconModule
+  - MatTooltipModule
+  - MatRadioModule
+  - MatSnackBarModule
+  - MatButtonModule
+  - MatCheckboxModule
+  - MatDialogModule
+- Interfaces:
+  - `BancoInterface`
+  - `CuentaBancoInterface`
+  - `FormaPagoInterface`
+  - `MontoIntreface`
+- Proveedores de datos:
+  - `bancos` (lista de bancos disponibles) *(Remplazar por consumo en api)*
+  - `cuentas` (lista de cuentas bancarias disponibles) *(Remplazar por consumo en api)*
+  - `formas` (lista de formas de pago disponibles) *(Remplazar por consumo en api)*
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 3. Propiedades
+### Variables de Estado
+- `formasPago`: Lista de formas de pago disponibles.
+- `forms`: Controla la visibilidad del formulario de montos.
+- `pago`: Forma de pago seleccionada.
+- `banco`: Banco seleccionado.
+- `bancos`: Lista de bancos disponibles.
+- `cuentas`: Lista de cuentas bancarias disponibles.
+- `monto`: Monto ingresado por el usuario.
+- `cuentaSelect`: Cuenta bancaria seleccionada.
+- `autorizacion`: Código de autorización ingresado.
+- `referencia`: Referencia del pago.
+- `montos`: Lista de pagos agregados.
+- `selectAllMontos`: Indica si se seleccionan todos los montos agregados.
+- `isLoading`: Indica si hay una operación en curso.
 
-## Code scaffolding
+### Variables de Totales
+- `total`: Total a pagar. *(Modifica este valor para hacer pruebas con montos distitntos)*
+- `saldo`: Saldo restante.
+- `cambio`: Cambio en caso de sobrepago.
+- `pagado`: Total pagado hasta el momento.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## 4. Métodos
+### `openSnackbar(message: string)`
+Muestra un mensaje emergente con `MatSnackBar`.
 
-## Build
+### `strToNum(texto: string): number | null`
+Convierte un string en un número flotante, devolviendo `null` si el string no es un número válido.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### `async viewForms(payment: FormaPagoInterface)`
+Gestiona la visibilidad del formulario según la forma de pago seleccionada.
+- Valida que haya saldo pendiente.
+- Carga bancos si la forma de pago lo requiere *(Agregar consumo de apis)*.
+- Muestra el formulario si es necesario.
 
-## Running unit tests
+### `addAmount()`
+Añade un monto a la lista de pagos:
+- Valida que el monto sea numérico.
+- Valida que el monto sea positivo mayor a 0.
+- Verifica la necesidad de autorización, referencia y banco.
+- Ajusta el monto si excede el saldo.
+- Agrega el pago a la lista y recalcula totales.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### `viewPayments()`
+Restablece los valores del formulario y marca la primera forma de pago como seleccionada (Estilos).
 
-## Running end-to-end tests
+### `async changeBanco()`
+Carga cuentas bancarias asociadas al banco seleccionado.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### `selectAll()`
+Marca o desmarca todas las formas de pago en la lista de montos.
 
-## Further help
+### `async deleteAmount()`
+Elimina los pagos seleccionados y recalcula totales.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### `calculateTotal()`
+Recalcula los totales de pago:
+- Suma montos pagados.
+- Calcula saldo pendiente o cambio si el pago excede el total.
+
+### `openDialogActions()`
+Abre un dialogo de confirmación, retorna true o false segun la opcion seleccionada por el usuario.
+
+## 5. Flujo de Uso
+1. Se selecciona una forma de pago.
+2. Se ingresa el monto y datos adicionales si son requeridos.
+3. Se agrega el pago a la lista.
+4. Se recalculan totales.
+5. Se pueden modificar, eliminar o agregar más pagos hasta completar la transacción.
+
+## 6. Consideraciones
+- Se debe validar que el usuario seleccione un banco y cuenta si la forma de pago lo requiere.
+- El saldo debe actualizarse correctamente tras cada operación.
+- Se debe manejar correctamente el caso en que el monto pagado supere el total.
+- Esta demo no 
