@@ -3,6 +3,11 @@
 ## 1. Descripción
 El componente `PaymentComponent` es responsable de gestionar el flujo de pagos en la aplicación. Permite seleccionar formas de pago, ingresar montos, validar datos y calcular totales.
 
+# Requisitos previos
+- Angular
+- Angular Material
+- SCSS
+
 ## 2. Dependencias
 Este componente depende de:
 - `Angular Material:`
