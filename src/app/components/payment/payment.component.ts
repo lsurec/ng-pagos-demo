@@ -45,7 +45,7 @@ export class PaymentComponent {
   }
 
   //converit un texto a nummero+
-  convertirTextoANumero(texto: string): number | null {
+  strToNum(texto: string): number | null {
     // Verificar si la cadena es un número
     const esNumero = /^\d+(\.\d+)?$/.test(texto);
 
@@ -61,6 +61,9 @@ export class PaymentComponent {
 
   //ver fommulario para la forma de pago
   async viewForms(payment: FormaPagoInterface) {
+
+    //asignar saldo y monto
+    this.monto = this.saldo.toString();
 
     //Marcar las formas de pago como no seleccionadas
     this.formasPago.forEach(p => p.select = false);
@@ -103,7 +106,7 @@ export class PaymentComponent {
   }
 
   //agregar una forma de pago
-  agregarMonto() {
+  addAmount() {
 
     //validar que exista un monto en el input
     if (!this.monto) {
@@ -113,7 +116,7 @@ export class PaymentComponent {
     }
 
     //converitr monto a numero
-    let monto = this.convertirTextoANumero(this.monto);
+    let monto = this.strToNum(this.monto);
 
     //validar que el monto sea numerico
     if (monto == null) {
@@ -177,7 +180,6 @@ export class PaymentComponent {
     //referencia vacia si no se requiere
     let ref: string = this.pago!.referencia ? this.referencia : "";
 
-
     //agregar cargo abono
     this.montos.push({
       checked: this.selectAllMontos,
@@ -190,7 +192,7 @@ export class PaymentComponent {
       difference: diference,
     });
 
-    this.calculateTotalesPago();
+    this.calculateTotal();
 
     this.openSnackbar("Pago agregado correctamente.");
     //despues de agregar la forma de pago limpiar todos los datos relacionados para evitar datos incorrectos
@@ -225,6 +227,7 @@ export class PaymentComponent {
 
   //Cambiar de banco
   async changeBanco() {
+    this.cuentas = []; 
     //simula caragr cuentas de banrural
     //TODO:Cargar cuentas bancarias
     if (this.banco!.banco == 4) {
@@ -233,7 +236,7 @@ export class PaymentComponent {
     }
   }
   //seleccionar o no, todas las formmas de pago
-  seleccionar() {
+  selectAll() {
     this.montos.forEach(element => {
       element.checked = this.selectAllMontos; //asiganer valor del checkbox a las formas de pago
     });
@@ -242,7 +245,7 @@ export class PaymentComponent {
 
 
   // Función para manejar la eliminación de pagos seleccionados
-  async eliminarPagosSeleccionados() {
+  async deleteAmount() {
     //buscar formas de pagos seleccioandas
     let montosSeleccionados: MontoIntreface[] = this.montos.filter((monto) => monto.checked);
 
@@ -260,14 +263,14 @@ export class PaymentComponent {
     //Sleccionar todos se marca en false
     this.selectAllMontos = false;
     //calcular totales
-    this.calculateTotalesPago();
+    this.calculateTotal();
 
     //montos elimminados
   }
 
 
   //calcular totales de pago
-  calculateTotalesPago() {
+  calculateTotal() {
     //TOTALES
     this.saldo = 0;
     this.cambio = 0;

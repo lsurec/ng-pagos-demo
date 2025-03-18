@@ -17,7 +17,7 @@
 
         <!-- Formulario de datos-->
         <div class="informacion" *ngIf="forms">
-            <form #ngForm="ngForm" (ngSubmit)="agregarMonto()">
+            <form #ngForm="ngForm" (ngSubmit)="addAmount()">
                 <div class="dFlex">
                     <button type="button" (click)="viewPayments()" mat-icon-button aria-label class="flecha-regresar"
                         matTooltip="Regresar">
@@ -88,11 +88,11 @@
         <div class="pago-agregado">
             <div class="dFlex" *ngIf="montos.length > 0">
                 <mat-checkbox class="example-margin" color="primary" [(ngModel)]="selectAllMontos"
-                    (ngModelChange)="seleccionar()"></mat-checkbox>
+                    (ngModelChange)="selectAll()"></mat-checkbox>
                 <p class="titulo">Pagos agregados ({{ montos .length}})
                 </p>
                 <span class="spacer"></span>
-                <button mat-icon-button (click)="eliminarPagosSeleccionados()">
+                <button mat-icon-button (click)="deleteAmount()">
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
