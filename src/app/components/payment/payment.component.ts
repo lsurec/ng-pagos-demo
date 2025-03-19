@@ -241,9 +241,13 @@ export class PaymentComponent {
     this.cuentas = [];
     //simula caragr cuentas de banrural
     //TODO:Cargar cuentas bancarias
+
     if (this.pago!.req_Cuenta_Bancaria) {
-      this.cuentas = cuentas;
+      if (this.banco!.banco == 4) {
+        this.cuentas = cuentas;
+      }
     }
+
   }
   //seleccionar o no todos los montos agregados
   selectAll() {
