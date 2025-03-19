@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { BancoInterface } from 'src/app/interfaces/banco.interface';
 import { CuentaBancoInterface } from 'src/app/interfaces/cuenta-banco.interface';
 import { FormaPagoInterface } from 'src/app/interfaces/forma-pago.interface';
-import { MontoIntreface } from 'src/app/interfaces/monto.interface';
+import { MontoIntreface as MontoInterface } from 'src/app/interfaces/monto.interface';
 import { bancos } from 'src/app/providers/bancos.provider';
 import { cuentas } from 'src/app/providers/cuenta.provider-';
 import { formas } from 'src/app/providers/formas-pago.provider';
@@ -18,7 +18,7 @@ import { DialogActionsComponent } from '../dialog-actions/dialog-actions.compone
 export class PaymentComponent {
 
   //datos para la pantalla pago
-  formasPago: FormaPagoInterface[] = formas; //formas de pago disponibles
+  formasPago: FormaPagoInterface[] = formas; //formas de pago disponibles (obtener de apis)
   forms: boolean = false; //ver formulario montos
   pago?: FormaPagoInterface; //Pago seleccionado
   banco?: BancoInterface; //banco seleccionado
@@ -28,7 +28,7 @@ export class PaymentComponent {
   cuentaSelect?: CuentaBancoInterface; //cuenta bancaria seleccionada
   autorizacion: string = ""; //inpur autorizacion
   referencia: string = "" //input referencia
-  montos: MontoIntreface[] = []; //Pagos agregados al documento
+  montos: MontoInterface[] = []; //Pagos agregados al documento
   selectAllMontos: boolean = false; //seleccionar todos los mmontos agregados
   isLoading: boolean = false;
 
@@ -241,12 +241,11 @@ export class PaymentComponent {
     this.cuentas = [];
     //simula caragr cuentas de banrural
     //TODO:Cargar cuentas bancarias
-    if (this.banco!.banco == 4) {
+    if (this.pago!.req_Cuenta_Bancaria) {
       this.cuentas = cuentas;
-
     }
   }
-  //seleccionar o no, todas las formmas de pago
+  //seleccionar o no todos los montos agregados
   selectAll() {
     this.montos.forEach(element => {
       element.checked = this.selectAllMontos; //asiganer valor del checkbox a las formas de pago
@@ -258,7 +257,7 @@ export class PaymentComponent {
   // Función para manejar la eliminación de pagos seleccionados
   async deleteAmount() {
     //buscar formas de pagos seleccioandas
-    let montosSeleccionados: MontoIntreface[] = this.montos.filter((monto) => monto.checked);
+    let montosSeleccionados: MontoInterface[] = this.montos.filter((monto) => monto.checked);
 
     //Alerta al intentar eliminar pagos sin tener seleccionada ninguna
     if (montosSeleccionados.length == 0) {
@@ -308,7 +307,7 @@ export class PaymentComponent {
       this.saldo = this.total - this.pagado;
     }
 
-    //Agregar saldo pendiente a la variebale del input monto enay pago
+    //Agregar saldo pendiente a la variebale del input
     this.monto = parseFloat(this.saldo.toFixed(2)).toString();
 
   }
